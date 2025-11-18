@@ -46,35 +46,106 @@ const mockQuestoes = [
     }
 ]
 
-const mockConfig = {
-    temas_ativos: ['Física 1'],
+let mockConfig = {
+    temas_ativos: ['Física 1', 'Física 2'],
     modo_de_jogo: 'classico',
     permitir_repeticao: false
 };
 
-// Funções Falsas (simulando a API)
+// --- MOCK DE USUÁRIOS ---
+let mockUsers = [
+    { username: 'prof', password: '123' }
+];
+
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 export const api = {
-    // Simula o login do professor
+    // --- FUNÇÕES DE AUTENTICAÇÃO ---
+    register: async (username, password) => {
+        await delay(500);
+        if (mockUsers.find(u => u.username === username)) {
+            return { success: false, message: 'Este nome de usuário já existe.' };
+        }
+        mockUsers.push({ username, password });
+        console.log('Usuários mockados:', mockUsers);
+        return { success: true, token: 'fake-jwt-token-for-' + username };
+    },
+
     login: async (username, password) => {
         await delay(500);
-        if (username === 'prof' && password === '123') {
-            return { success: true, token: 'fake-jwt-token' };
+        const user = mockUsers.find(u => u.username === username && u.password === password);
+        if (user) {
+            return { success: true, token: 'fake-jwt-token-for-' + username };
         }
         return { success: false, message: 'Usuário ou senha inválidos' };
     },
+    
+    // --- FUNÇÕES DE GERENCIAMENTO DE QUESTÕES (CRUD) ---
+    getQuestions: async () => {
+        await delay(500);
+        // AJUSTE: A resposta agora usa a chave 'data'
+        return { success: true, data: mockQuestoes };
+    },
 
-    // Simula a busca da próxima questão
+    createQuestion: async (questionData) => {
+        await delay(300);
+        const newQuestion = {
+            ...questionData,
+            id: `q${Math.random() * 1000}` // Gera um ID simples
+        };
+        mockQuestoes.push(newQuestion);
+        return { success: true, data: newQuestion };
+    },
+
+    updateQuestion: async (id, questionData) => {
+        await delay(300);
+        mockQuestoes = mockQuestoes.map(q => q.id === id ? { ...q, ...questionData } : q);
+        const updatedQuestion = mockQuestoes.find(q => q.id === id);
+        return { success: true, data: updatedQuestion };
+    },
+    
+    deleteQuestion: async (id) => {
+        await delay(300);
+        mockQuestoes = mockQuestoes.filter(q => q.id !== id);
+        return { success: true };
+    },
+
+    // --- FUNÇÕES DE CONFIGURAÇÃO DO JOGO ---
+    getConfig: async () => {
+        await delay(200);
+        // AJUSTE: A resposta agora usa a chave 'data'
+        return { success: true, data: mockConfig };
+    },
+
+    saveConfig: async (config) => {
+        await delay(400);
+        mockConfig = config;
+        // AJUSTE: A resposta agora usa a chave 'data'
+        return { success: true, data: mockConfig };
+    },
+
+    getAllThemes: async () => {
+        await delay(100);
+        const themes = mockQuestoes.map(q => q.tema);
+        const uniqueThemes = [...new Set(themes)]; // Pega apenas os temas únicos
+        return { success: true, data: uniqueThemes };
+    },
+
+    resetHistory: async () => {
+        await delay(500);
+        // Em um backend real, isso limparia um campo no DB. Aqui, só confirmamos.
+        console.log("Histórico dos jogadores foi resetado.");
+        return { success: true };
+    },
+
+    // --- FUNÇÕES PARA O GAMEPLAY DO JOGADOR (usaremos no futuro) ---
     getNextQuestion: async (nivelAtual) => {
         await delay(300);
-        // Lógica simples para pegar uma questão do nível certo
         const dificuldades = ['muito_facil', 'facil', 'medio', 'dificil', 'muito_dificil'];
         const proximaQuestao = mockQuestoes.find(q => q.dificuldade === dificuldades[nivelAtual - 1]);
         return { success: true, questao: proximaQuestao };
     },
 
-    // Simula o envio da resposta
     sendAnswer: async (idQuestao, resposta) => {
         await delay(400);
         const questao = mockQuestoes.find(q => q.id === idQuestao);
@@ -82,7 +153,6 @@ export const api = {
         return { success: true, isCorrect: isCorrect, pontuacao_atualizada: isCorrect ? 100 : 0 };
     },
 
-    // Simula o uso da ajuda
     useHelp: async (tipoAjuda, idQuestao) => {
         await delay(600);
         if (tipoAjuda === 'eliminar') {
@@ -95,24 +165,5 @@ export const api = {
         if (tipoAjuda === 'chat') {
             return { success: true, chat_response: '(Simulação) A resposta é m/s.' };
         }
-    },
-    
-    getQuestoes: async () => {
-        await delay(300);
-        return { success: true, questoes: mockQuestoes };
-    },
-    createQuestao: async (questao) => {
-        await delay(300);
-        mockQuestoes.push(questao);
-        return { success: true, questao: questao };
-    },
-    getConfig: async () => {
-        await delay(300);
-        return { success: true, config: mockConfig };
-    },
-    updateConfig: async (config) => {
-        await delay(300);
-        mockConfig = config;
-        return { success: true, config: config };
     },
 };
