@@ -1,4 +1,4 @@
-const mockQuestoes = [
+let mockQuestoes = [
     {
         id: 'q1',
         tema: 'Física 1',
@@ -99,14 +99,16 @@ export const api = {
 
     updateQuestion: async (id, questionData) => {
         await delay(300);
-        mockQuestoes = mockQuestoes.map(q => q.id === id ? { ...q, ...questionData } : q);
+        const updatedQuestions = mockQuestoes.map(q => q.id === id ? { ...q, ...questionData } : q);
+        mockQuestoes = updatedQuestions;
         const updatedQuestion = mockQuestoes.find(q => q.id === id);
         return { success: true, data: updatedQuestion };
     },
     
     deleteQuestion: async (id) => {
         await delay(300);
-        mockQuestoes = mockQuestoes.filter(q => q.id !== id);
+        const filteredQuestions = mockQuestoes.filter(q => q.id !== id);
+        mockQuestoes = filteredQuestions;
         return { success: true };
     },
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // 1. Importe o useNavigate para navegação
-import { api } from '../service/mockApi'; // Verifique se o caminho está correto
+import { useNavigate } from 'react-router-dom';
+import { api } from '../service/mockApi'; 
 
 function Login() {
     // Vamos usar um único estado para o formulário, fica mais organizado
@@ -10,7 +10,6 @@ function Login() {
     });
     const [error, setError] = useState(''); // Estado para guardar mensagens de erro
 
-    // 2. Inicialize o hook de navegação
     const navigate = useNavigate();
 
     // Função para atualizar o estado do formulário
@@ -34,13 +33,13 @@ function Login() {
         const response = await api.login(formData.username, formData.password);
         if (response.success) {
             localStorage.setItem('token', response.token);
-            navigate('/dashboard'); // 3. Navega para o dashboard de forma programática
+            navigate('/dashboard'); // Navega para o dashboard de forma programática
         } else {
             setError(response.message); // Exibe o erro na tela
         }
     };
     
-    const handleRegister = async () => { // Removido o 'e' que não era usado
+    const handleRegister = async () => { 
         setError('');
         
         if (!formData.username || !formData.password) {
@@ -61,7 +60,6 @@ function Login() {
         <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
             <div className="p-8 bg-white rounded shadow-md w-96">
                 <h1 className="text-2xl font-bold text-center mb-6">Painel do Professor</h1>
-                {/* 4. Conectando os inputs ao estado com 'value' e 'onChange' */}
                 <form className="flex flex-col gap-4" onSubmit={handleLogin}>
                     <input 
                         type="text" 
@@ -83,7 +81,6 @@ function Login() {
                     {/* Exibe a mensagem de erro, se houver */}
                     {error && <p className="text-red-500 text-sm">{error}</p>}
                     
-                    {/* 5. Simplificando os botões */}
                     <button type="submit" className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
                         Entrar
                     </button>
