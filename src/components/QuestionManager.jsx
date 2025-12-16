@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { api } from '../service/mockApi';
+import { api } from '../service/api';
 import Modal from './Modal'; 
 import QuestionForm from './QuestionForm'; 
 

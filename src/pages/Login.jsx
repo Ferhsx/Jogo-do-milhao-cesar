@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { api } from '../service/mockApi'; 
+import { api } from '../service/api';
 
 function Login() {
-    // Vamos usar um único estado para o formulário, fica mais organizado
     const [formData, setFormData] = useState({
-        username: '',
-        password: ''
+        email: '',
+        password: '',
+        name: ''
     });
-    const [error, setError] = useState(''); // Estado para guardar mensagens de erro
-
+    const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    // Função para atualizar o estado do formulário
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({
@@ -22,35 +20,36 @@ function Login() {
     };
     
     const handleLogin = async (e) => {
-        e.preventDefault(); // Previne o recarregamento da página
-        setError(''); // Limpa erros anteriores
+        e.preventDefault();
+        setError('');
         
-        if (!formData.username || !formData.password) {
-            setError('Por favor, preencha todos os campos.');
+        // CORREÇÃO: Usar formData.email em vez de username
+        if (!formData.email || !formData.password) {
+            setError('Por favor, preencha email e senha.');
             return;
         }
 
-        const response = await api.login(formData.username, formData.password);
+        const response = await api.login(formData.email, formData.password);
         if (response.success) {
             localStorage.setItem('token', response.token);
-            navigate('/dashboard'); // Navega para o dashboard de forma programática
+            navigate('/dashboard');
         } else {
-            setError(response.message); // Exibe o erro na tela
+            setError(response.message);
         }
     };
     
     const handleRegister = async () => { 
         setError('');
         
-        if (!formData.username || !formData.password) {
-            setError('Por favor, preencha todos os campos.');
+        if (!formData.email || !formData.password || !formData.name) {
+            setError('Por favor, preencha todos os campos para cadastro.');
             return;
         }
 
-        const response = await api.register(formData.username, formData.password);
+        const response = await api.register(formData.name, formData.email, formData.password);
         if (response.success) {
-            localStorage.setItem('token', response.token);
-            navigate('/dashboard');
+            alert("Cadastro realizado! Faça login.");
+            // Opcional: fazer login automático ou limpar form
         } else {
             setError(response.message);
         }
@@ -62,10 +61,10 @@ function Login() {
                 <h1 className="text-2xl font-bold text-center mb-6">Painel do Professor</h1>
                 <form className="flex flex-col gap-4" onSubmit={handleLogin}>
                     <input 
-                        type="text" 
-                        name="username" // O 'name' deve corresponder à chave no estado
-                        placeholder="Usuário" 
-                        value={formData.username}
+                        type="email" 
+                        name="email"
+                        placeholder="Email" 
+                        value={formData.email}
                         onChange={handleChange}
                         className="p-2 border border-gray-300 rounded"
                     />
@@ -77,15 +76,22 @@ function Login() {
                         onChange={handleChange}
                         className="p-2 border border-gray-300 rounded"
                     />
+                    <input 
+                        type="text" 
+                        name="name"
+                        placeholder="Nome (Apenas para Cadastro)"
+                        value={formData.name}
+                        onChange={handleChange}
+                        className="p-2 border border-gray-300 rounded"
+                    />
                     
-                    {/* Exibe a mensagem de erro, se houver */}
                     {error && <p className="text-red-500 text-sm">{error}</p>}
                     
                     <button type="submit" className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
                         Entrar
                     </button>
                     <button type="button" onClick={handleRegister} className="bg-gray-500 text-white p-2 rounded hover:bg-gray-600">
-                        Cadastrar
+                        Cadastrar Novo Admin
                     </button>
                 </form>
             </div>

@@ -1,60 +1,86 @@
+// src/pages/Home.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { api } from '../service/mockApi';
+import { api } from '../service/api';
 
 function Home() {
     const navigate = useNavigate();
+    const [pin, setPin] = useState('');
+    const [nickname, setNickname] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const handleStartGame = async () => {
+    const handleEnterGame = async (e) => {
+        e.preventDefault(); // Previne refresh se der enter no form
         setLoading(true);
-        // Aqui simularíamos o POST /game/start
-        // Como nosso mock de questões é simples, vamos apenas navegar para a tela do jogo
-        // Na implementação real, receberíamos um id_sessao aqui.
-        
-        // Simula um delay de carregamento
-        setTimeout(() => {
-            navigate('/game');
-        }, 1000);
+
+        if(!pin || !nickname){
+            alert("Preencha todos os campos");
+            setLoading(false);
+            return;
+        }
+
+        // 1. Chama a API para criar a sessão
+        const response = await api.startGame(pin, nickname);
+
+        if (response.success) {
+            // 2. Navega para a tela de jogo levando os dados (sessão e 1ª pergunta)
+            // Usamos o 'state' do navigate para passar dados sem sujar a URL
+            navigate('/play', { 
+                state: { 
+                    sessionId: response.sessionId,
+                    firstQuestion: response.question,
+                    nickname: nickname || 'Jogador'
+                } 
+            });
+        } else {
+            alert("Erro ao iniciar: " + response.message);
+            setLoading(false);
+        }
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 flex flex-col items-center justify-center text-white px-4">
-            <div className="text-center space-y-8 max-w-lg">
-                <h1 className="text-5xl font-extrabold drop-shadow-lg">
-                    Quiz Educacional
+        <div className="min-h-screen bg-purple-700 flex flex-col items-center justify-center p-4 overflow-hidden relative">
+            {/* Formas Geométricas de Fundo (Estilo Kahoot) */}
+            <div className="absolute top-10 left-10 w-20 h-20 bg-red-500 rounded-full opacity-20 animate-bounce"></div>
+            <div className="absolute bottom-10 right-10 w-32 h-32 bg-yellow-400 rotate-45 opacity-20"></div>
+            
+            <div className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md z-10">
+                <h1 className="text-4xl font-black text-center text-gray-800 mb-8 font-sans">
+                    QUIZ<span className="text-purple-600">APP</span>
                 </h1>
-                <p className="text-xl font-light opacity-90">
-                    Teste seus conhecimentos e veja até onde você consegue chegar!
-                </p>
-                
-                <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-xl">
-                    <p className="mb-4 text-sm font-medium uppercase tracking-wider text-blue-100">
-                        Pronto para o desafio?
-                    </p>
-                    <button 
-                        onClick={handleStartGame}
-                        disabled={loading}
-                        className={`
-                            w-full py-4 px-8 rounded-full font-bold text-xl transition-all transform hover:scale-105 shadow-lg
-                            ${loading 
-                                ? 'bg-gray-400 cursor-not-allowed' 
-                                : 'bg-yellow-400 text-blue-900 hover:bg-yellow-300'}
-                        `}
-                    >
-                        {loading ? 'Iniciando...' : 'INICIAR JOGO'}
-                    </button>
-                </div>
 
-                <div className="mt-8 text-sm opacity-60">
-                    <p>Modo Professor?</p>
+                <form onSubmit={handleEnterGame} className="flex flex-col gap-4">
+
+                    <input
+                        type="text"
+                        placeholder="Pin da sala"
+                        value={pin}
+                        onChange={(e) => setPin(e.target.value.replace(/\D/g, ''))}
+                        className="w-full p-4 text-center text-xl font-bold bg-gray-100 border-b-4 border-gray-300 rounded focus:border-purple-500 focus:outline-none placeholder-gray-400 text-gray-700"
+                    />
+
+                    <input 
+                        type="text" 
+                        placeholder="Seu Apelido" 
+                        value={nickname}
+                        onChange={(e) => setNickname(e.target.value)}
+                        className="w-full p-4 text-center text-xl font-bold bg-gray-100 border-b-4 border-gray-300 rounded focus:border-purple-500 focus:outline-none placeholder-gray-400 text-gray-700"
+                    />
+                    
                     <button 
-                        onClick={() => navigate('/login')} 
-                        className="underline hover:text-yellow-300"
+                        type="submit"
+                        disabled={loading}
+                        className="w-full py-4 bg-gray-900 text-white font-bold text-xl rounded shadow-[0_4px_0_rgb(0,0,0)] active:shadow-none active:translate-y-1 transition-all hover:bg-gray-800 disabled:opacity-50"
                     >
-                        Acesse o Painel Administrativo
+                        {loading ? 'Entrando...' : 'ENTRAR'}
                     </button>
-                </div>
+                </form>
+            </div>
+
+            <div className="mt-8 text-white/50 text-sm">
+                <button onClick={() => navigate('/login')} className="hover:text-white underline">
+                    Acesso Professor
+                </button>
             </div>
         </div>
     );
