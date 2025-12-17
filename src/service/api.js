@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000/api';
+const API_URL = `http://${window.location.hostname}:3000/api`;
 
 // Função auxiliar para lidar com as respostas
 const handleResponse = async (response) => {
@@ -12,7 +12,15 @@ const handleResponse = async (response) => {
     }
 
     if (!response.ok) {
-        // Se der erro (400, 401, 500), lança exceção para ser pega no catch
+        // Se der erro de autenticação (401), desloga o usuário
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            // Redireciona para o login e recarrega para limpar estados
+            window.location.href = '/login';
+            return;
+        }
+
+        // Se der erro (400, 500), lança exceção para ser pega no catch
         const errorMsg = (data && data.message) || response.statusText;
         throw new Error(errorMsg);
     }
@@ -103,6 +111,19 @@ export const api = {
                 method: 'PUT',
                 headers: getAuthHeaders(),
                 body: JSON.stringify(questionData)
+            });
+            return await handleResponse(response);
+        } catch (error) {
+            return { success: false, message: error.message };
+        }
+    },
+
+    importQuestions: async (text) => {
+        try {
+            const response = await fetch(`${API_URL}/questions/import`, {
+                method: 'POST',
+                headers: getAuthHeaders(),
+                body: JSON.stringify({ text })
             });
             return await handleResponse(response);
         } catch (error) {
