@@ -1,36 +1,57 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X } from 'lucide-react';
 
-// O Modal recebe:
-// - isOpen: um booleano que controla sua visibilidade
-// - onClose: uma função para fechá-lo
-// - title: o título a ser exibido no cabeçalho
-// - children: o conteúdo que será renderizado dentro do modal (nosso formulário)
-function Modais({ isOpen, onClose, title, children }) {
-    // Se não estiver aberto, não renderiza nada
-    if (!isOpen) return null;
+function Modal({ isOpen, onClose, title, children }) {
+    // Close on Escape key
+    useEffect(() => {
+        const handleEsc = (e) => {
+            if (e.key === 'Escape') onClose();
+        };
+        window.addEventListener('keydown', handleEsc);
+        return () => window.removeEventListener('keydown', handleEsc);
+    }, [onClose]);
 
     return (
-        // Overlay (fundo escuro)
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
-            {/* Conteúdo do Modal */}
-            <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl">
-                {/* Cabeçalho do Modal */}
-                <div className="flex justify-between items-center p-4 border-b">
-                    <h3 className="text-xl font-semibold">{title}</h3>
-                    <button 
-                        onClick={onClose} 
-                        className="text-gray-500 hover:text-gray-800 text-2xl"
-                    >
-                        &times; {/* Isso é um 'X' para fechar */}
-                    </button>
-                </div>
-                {/* Corpo do Modal (onde o formulário vai entrar) */}
-                <div className="p-6">
-                    {children}
-                </div>
-            </div>
-        </div>
+        <AnimatePresence>
+            {isOpen && (
+                <>
+                    {/* Backdrop */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={onClose}
+                        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 transition-colors"
+                    />
+
+                    {/* Content */}
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                            className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]"
+                        >
+                            <div className="flex justify-between items-center px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+                                <h3 className="text-xl font-bold text-gray-800">{title}</h3>
+                                <button
+                                    onClick={onClose}
+                                    className="p-1 rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-colors"
+                                >
+                                    <X size={20} />
+                                </button>
+                            </div>
+
+                            <div className="p-6 overflow-y-auto custom-scrollbar">
+                                {children}
+                            </div>
+                        </motion.div>
+                    </div>
+                </>
+            )}
+        </AnimatePresence>
     );
 }
 
-export default Modais;
+export default Modal;
