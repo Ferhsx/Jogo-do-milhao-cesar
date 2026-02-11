@@ -197,15 +197,13 @@ export const api = {
             const response = await fetch(`${API_URL}/rooms`, {
                 method: 'POST',
                 headers: getAuthHeaders(),
-                body: JSON.stringify(configData)
+                body: JSON.stringify({ config: configData })
             });
             return await handleResponse(response);
         } catch (error) {
             return { success: false, message: error.message };
         }
     },
-
-    // --- JOGO (JOGADOR) ---
 
     startGame: async (pin, nickname) => {
         try {
@@ -218,22 +216,10 @@ export const api = {
             return {
                 success: true,
                 sessionId: result.data.sessionStr,
-                question: result.data.question
+                question: result.data.question,
+                config: result.data.config || {},
+                roomId: result.data.roomId || null
             };
-        } catch (error) {
-            return { success: false, message: error.message };
-        }
-    },
-
-    // Novo método para criar sala
-    createRoom: async (configData) => {
-        try {
-            const response = await fetch(`${API_URL}/rooms`, { // Nova rota no backend
-                method: 'POST',
-                headers: getAuthHeaders(),
-                body: JSON.stringify({ config: configData })
-            });
-            return await handleResponse(response);
         } catch (error) {
             return { success: false, message: error.message };
         }
@@ -258,6 +244,39 @@ export const api = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ sessionId, type, questionId })
+            });
+            return await handleResponse(response);
+        } catch (error) {
+            return { success: false, message: error.message };
+        }
+    },
+
+    getRanking: async (roomId) => {
+        try {
+            const response = await fetch(`${API_URL}/game/ranking/${roomId}`, {
+                headers: { 'Content-Type': 'application/json' }
+            });
+            return await handleResponse(response);
+        } catch (error) {
+            return { success: false, message: error.message };
+        }
+    },
+
+    getSessionDetails: async (sessionId) => {
+        try {
+            const response = await fetch(`${API_URL}/game/session/${sessionId}`, {
+                headers: getAuthHeaders()
+            });
+            return await handleResponse(response);
+        } catch (error) {
+            return { success: false, message: error.message };
+        }
+    },
+
+    getAllRoomSessions: async (roomId) => {
+        try {
+            const response = await fetch(`${API_URL}/game/room-sessions/${roomId}`, {
+                headers: getAuthHeaders()
             });
             return await handleResponse(response);
         } catch (error) {

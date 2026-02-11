@@ -28,7 +28,9 @@ function Home() {
                 state: {
                     sessionId: response.sessionId,
                     firstQuestion: response.question,
-                    nickname: nickname || 'Jogador'
+                    nickname: nickname || 'Jogador',
+                    gameConfig: response.config || {},
+                    roomId: response.roomId || null
                 }
             });
         } else {

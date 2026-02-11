@@ -1,32 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../service/api';
-import { Settings, RefreshCw, PlayCircle, Hash, Copy } from 'lucide-react';
+import { Settings, RefreshCw, PlayCircle, Hash, Clock, Eye, EyeOff, Trophy, Zap } from 'lucide-react';
+import RankingModal from './RankingModal';
 
 function GameConfig() {
     const [config, setConfig] = useState({
         temas_ativos: [],
         modo_de_jogo: 'classico',
         permitir_repeticao: false,
+        tempo_base: 0,
+        modo_tempo: 'fixo',
+        esconder_nivel_visual: false,
+        exibir_ranking: true,
     });
     const [availableThemes, setAvailableThemes] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [message, setMessage] = useState(''); // Para feedback ao usuário
-    const [createdPin, setCreatedPin] = useState(null);
+    const [message, setMessage] = useState('');
+    const [createdPin, setCreatedPin] = useState(() => localStorage.getItem('activeRoomPin'));
+    const [activeRoomId, setActiveRoomId] = useState(() => localStorage.getItem('activeRoomId'));
+    const [showRanking, setShowRanking] = useState(false);
 
-    // Busca os dados iniciais (configuração atual e temas disponíveis)
     useEffect(() => {
         const loadData = async () => {
             try {
                 setLoading(true);
                 const configResponse = await api.getConfig();
                 const themesResponse = await api.getAllThemes();
-
-                if (configResponse.success) {
-                    setConfig(configResponse.data);
-                }
-                if (themesResponse.success) {
-                    setAvailableThemes(themesResponse.data);
-                }
+                if (configResponse.success) setConfig(prev => ({ ...prev, ...configResponse.data }));
+                if (themesResponse.success) setAvailableThemes(themesResponse.data);
             } catch (error) {
                 setMessage('Erro ao carregar configurações.');
             } finally {
@@ -38,26 +39,24 @@ function GameConfig() {
 
     const handleThemeChange = (theme) => {
         const newThemes = config.temas_ativos.includes(theme)
-            ? config.temas_ativos.filter(t => t !== theme) // Desmarca
-            : [...config.temas_ativos, theme]; // Marca
-
+            ? config.temas_ativos.filter(t => t !== theme)
+            : [...config.temas_ativos, theme];
         setConfig(prev => ({ ...prev, temas_ativos: newThemes }));
     };
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-        const newValue = type === 'checkbox' ? checked : value;
+        let newValue;
+        if (type === 'checkbox') newValue = checked;
+        else if (type === 'number') newValue = Number(value);
+        else newValue = value;
         setConfig(prev => ({ ...prev, [name]: newValue }));
     };
 
     const handleSave = async () => {
         setMessage('Salvando...');
         const response = await api.saveConfig(config);
-        if (response.success) {
-            setMessage('Configurações salvas!');
-        } else {
-            setMessage('Falha ao salvar.');
-        }
+        setMessage(response.success ? 'Configurações salvas!' : 'Falha ao salvar.');
         setTimeout(() => setMessage(''), 3000);
     };
 
@@ -65,11 +64,7 @@ function GameConfig() {
         if (window.confirm("Isso limpará o histórico de questões usadas de TODOS os jogadores. Deseja continuar?")) {
             setMessage('Resetando...');
             const response = await api.resetHistory();
-            if (response.success) {
-                setMessage('Histórico resetado!');
-            } else {
-                setMessage('Falha ao resetar.');
-            }
+            setMessage(response.success ? 'Histórico resetado!' : 'Falha ao resetar.');
             setTimeout(() => setMessage(''), 3000);
         }
     };
@@ -79,7 +74,12 @@ function GameConfig() {
             setMessage('Criando sala...');
             const response = await api.createRoom(config);
             if (response.success) {
-                setCreatedPin(response.data.pin); // Backend retorna o PIN
+                setCreatedPin(response.data.pin);
+                setActiveRoomId(response.data.roomId);
+
+                if (response.data.pin) localStorage.setItem('activeRoomPin', response.data.pin);
+                if (response.data.roomId) localStorage.setItem('activeRoomId', response.data.roomId);
+
                 setMessage('');
             } else {
                 setMessage('Erro ao criar sala: ' + (response.message || 'Falha desconhecida'));
@@ -99,14 +99,21 @@ function GameConfig() {
 
     return (
         <div className="space-y-6">
-
             {createdPin ? (
                 <div className="flex flex-col items-center justify-center py-8 animate-scale-in">
                     <div className="bg-purple-600 text-white p-8 md:p-12 text-center rounded-2xl shadow-xl max-w-lg w-full">
                         <h3 className="text-xl md:text-2xl font-bold mb-2 opacity-90">Sala Pronta!</h3>
                         <p className="text-purple-200 mb-6 text-sm">Compartilhe o código abaixo com seus alunos</p>
-
-                        <div className="relative inline-block group cursor-pointer" onClick={() => navigator.clipboard.writeText(createdPin)}>
+                        <div
+                            className="relative inline-block group cursor-pointer"
+                            onClick={() => {
+                                if (navigator.clipboard) {
+                                    navigator.clipboard.writeText(createdPin);
+                                } else {
+                                    alert("PIN: " + createdPin + " (Cópia automática não disponível no seu navegador)");
+                                }
+                            }}
+                        >
                             <div className="bg-white/10 text-6xl font-black tracking-[0.2em] px-8 py-4 rounded-xl border-2 border-white/20 shadow-inner backdrop-blur-sm group-hover:bg-white/20 transition-colors">
                                 {createdPin}
                             </div>
@@ -115,15 +122,32 @@ function GameConfig() {
                             </div>
                         </div>
 
-                        <div className="mt-8">
+                        <div className="mt-12 flex flex-col gap-3">
                             <button
-                                onClick={() => setCreatedPin(null)}
-                                className="text-white/60 hover:text-white underline text-sm transition-colors"
+                                onClick={() => setShowRanking(true)}
+                                className="w-full bg-yellow-400 hover:bg-yellow-500 text-purple-900 font-black py-4 rounded-xl flex items-center justify-center gap-2 transform transition-all active:scale-95 shadow-lg"
                             >
+                                <Trophy size={20} />
+                                VER RANKING E RELATÓRIOS
+                            </button>
+                            <button onClick={() => {
+                                setCreatedPin(null);
+                                setActiveRoomId(null);
+                                localStorage.removeItem('activeRoomPin');
+                                localStorage.removeItem('activeRoomId');
+                            }} className="text-white/60 hover:text-white underline text-sm transition-colors mt-2">
                                 Gerar novo código
                             </button>
                         </div>
                     </div>
+
+                    {showRanking && (
+                        <RankingModal
+                            roomId={activeRoomId}
+                            onClose={() => setShowRanking(false)}
+                            isProfessor={true}
+                        />
+                    )}
                 </div>
             ) : (
                 <>
@@ -156,6 +180,7 @@ function GameConfig() {
 
                         {/* Configurações Gerais */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {/* Modo de Jogo */}
                             <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
                                 <h3 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-2">
                                     <Settings size={14} /> Modo de Jogo
@@ -169,9 +194,20 @@ function GameConfig() {
                                         <input type="radio" name="modo_de_jogo" value="alternativo" checked={config.modo_de_jogo === 'alternativo'} onChange={handleChange} className="text-purple-600 focus:ring-purple-500 h-4 w-4" />
                                         <span className="text-sm font-medium">Alternativo</span>
                                     </label>
+                                    <label className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${config.modo_de_jogo === 'personalizado'
+                                        ? 'bg-purple-50 border-purple-400 ring-2 ring-purple-200'
+                                        : 'bg-white border-gray-200 hover:border-purple-300'
+                                        }`}>
+                                        <input type="radio" name="modo_de_jogo" value="personalizado" checked={config.modo_de_jogo === 'personalizado'} onChange={handleChange} className="text-purple-600 focus:ring-purple-500 h-4 w-4" />
+                                        <div className="flex items-center gap-2">
+                                            <Zap size={14} className="text-purple-500" />
+                                            <span className="text-sm font-medium">Personalizado</span>
+                                        </div>
+                                    </label>
                                 </div>
                             </div>
 
+                            {/* Outras Opções */}
                             <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 flex flex-col">
                                 <h3 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-2">
                                     Outras Opções
@@ -180,13 +216,75 @@ function GameConfig() {
                                     <input type="checkbox" name="permitir_repeticao" checked={config.permitir_repeticao} onChange={handleChange} className="h-5 w-5 rounded border-gray-300 text-purple-600 focus:ring-purple-500" />
                                     <span className="text-sm font-medium">Repetir perguntas já usadas</span>
                                 </label>
-
                                 <button onClick={handleResetHistory} className="mt-4 flex items-center justify-center gap-2 text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition-colors border border-dashed border-red-200 hover:border-red-300 text-sm">
                                     <RefreshCw size={14} />
                                     Resetar Histórico
                                 </button>
                             </div>
                         </div>
+
+                        {/* Seção Personalizado — só aparece quando o modo "personalizado" está selecionado */}
+                        {config.modo_de_jogo === 'personalizado' && (
+                            <div className="bg-gradient-to-r from-purple-50 to-indigo-50 p-5 rounded-xl border border-purple-200">
+                                <h3 className="text-sm font-bold text-purple-700 uppercase tracking-widest mb-4 flex items-center gap-2">
+                                    <Zap size={14} /> Configurações do Modo Personalizado
+                                </h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {/* Timer */}
+                                    <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                                        <label className="flex items-center gap-2 text-sm font-bold text-gray-600 mb-2">
+                                            <Clock size={14} className="text-purple-500" /> Tempo por Pergunta
+                                        </label>
+                                        <div className="flex items-center gap-3">
+                                            <input
+                                                type="number"
+                                                name="tempo_base"
+                                                value={config.tempo_base}
+                                                onChange={handleChange}
+                                                min={0}
+                                                max={300}
+                                                placeholder="0"
+                                                className="w-24 px-3 py-2 border border-gray-300 rounded-lg text-center font-bold text-lg focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none"
+                                            />
+                                            <span className="text-sm text-gray-500">segundos <span className="text-xs text-gray-400">(0 = sem tempo)</span></span>
+                                        </div>
+                                        {config.tempo_base > 0 && (
+                                            <div className="mt-3">
+                                                <label className="text-xs font-bold text-gray-500 uppercase mb-1 block">Modo do Tempo</label>
+                                                <select
+                                                    name="modo_tempo"
+                                                    value={config.modo_tempo}
+                                                    onChange={handleChange}
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none bg-white"
+                                                >
+                                                    <option value="fixo">⏱️ Fixo (mesmo tempo sempre)</option>
+                                                    <option value="regressivo">🔥 Regressivo (menos tempo em níveis altos)</option>
+                                                    <option value="progressivo">🧊 Progressivo (mais tempo em níveis altos)</option>
+                                                </select>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Visual / Ranking */}
+                                    <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm space-y-3">
+                                        <label className="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                                            <input type="checkbox" name="esconder_nivel_visual" checked={config.esconder_nivel_visual} onChange={handleChange} className="h-5 w-5 rounded border-gray-300 text-purple-600 focus:ring-purple-500" />
+                                            <div className="flex items-center gap-2">
+                                                {config.esconder_nivel_visual ? <EyeOff size={14} className="text-gray-400" /> : <Eye size={14} className="text-purple-500" />}
+                                                <span className="text-sm font-medium">Esconder nível da pergunta</span>
+                                            </div>
+                                        </label>
+                                        <label className="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                                            <input type="checkbox" name="exibir_ranking" checked={config.exibir_ranking} onChange={handleChange} className="h-5 w-5 rounded border-gray-300 text-purple-600 focus:ring-purple-500" />
+                                            <div className="flex items-center gap-2">
+                                                <Trophy size={14} className={config.exibir_ranking ? "text-yellow-500" : "text-gray-400"} />
+                                                <span className="text-sm font-medium">Ativar Ranking (Leaderboard)</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     {/* Botões de Ação */}
@@ -198,7 +296,6 @@ function GameConfig() {
                         >
                             {message || 'Salvar Alterações'}
                         </button>
-
                         <button
                             onClick={handleCreateRoom}
                             className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-lg font-bold py-3 rounded-xl shadow-lg hover:shadow-indigo-500/30 transition-all hover:scale-[1.02] active:scale-98 flex items-center justify-center gap-2"

@@ -1,0 +1,139 @@
+::Ciências:: Qual é o maior planeta do Sistema Solar? {
+=Júpiter
+~Saturno
+~Netuno
+~Urano
+} [muito_facil]
+
+::Ciências:: Qual gás é essencial para a respiração humana? {
+=Oxigênio
+~Nitrogênio
+~Dióxido de carbono
+~Hélio
+} [muito_facil]
+
+::Ciências:: Qual é o ponto de ebulição da água ao nível do mar? {
+=100°C
+~90°C
+~110°C
+~80°C
+} [facil]
+
+::Ciências:: Qual vitamina é produzida pela exposição ao sol? {
+=Vitamina D
+~Vitamina C
+~Vitamina A
+~Vitamina B12
+} [facil]
+
+::Geografia:: Qual é o rio mais longo do mundo? {
+=Rio Nilo
+~Rio Amazonas
+~Rio Yangtzé
+~Rio Mississippi
+} [facil]
+
+::Geografia:: Qual é o menor país do mundo em área? {
+=Vaticano
+~Mônaco
+~San Marino
+~Liechtenstein
+} [medio]
+
+::Geografia:: Em qual continente está localizado o Deserto do Saara? {
+=África
+~Ásia
+~Oceania
+~América do Sul
+} [muito_facil]
+
+::Geografia:: Qual é a capital da Austrália? {
+=Canberra
+~Sydney
+~Melbourne
+~Brisbane
+} [medio]
+
+::História:: Em que ano o Brasil declarou independência de Portugal? {
+=1822
+~1808
+~1889
+~1500
+} [facil]
+
+::História:: Quem pintou a Mona Lisa? {
+=Leonardo da Vinci
+~Michelangelo
+~Rafael
+~Donatello
+} [muito_facil]
+
+::História:: Qual civilização construiu Machu Picchu? {
+=Incas
+~Maias
+~Astecas
+~Olmecas
+} [medio]
+
+::História:: Em que ano caiu o Muro de Berlim? {
+=1989
+~1991
+~1985
+~1979
+} [medio]
+
+::Matemática:: Quanto é a raiz quadrada de 144? {
+=12
+~14
+~11
+~13
+} [facil]
+
+::Matemática:: Qual é o valor de Pi aproximado até duas casas decimais? {
+=3,14
+~3,41
+~3,12
+~3,16
+} [muito_facil]
+
+::Matemática:: Quantos graus tem a soma dos ângulos internos de um triângulo? {
+=180°
+~360°
+~90°
+~270°
+} [facil]
+
+::Matemática:: O que é um número primo? {
+=Um número divisível apenas por 1 e por ele mesmo
+~Um número divisível por 2
+~Um número que termina em 0
+~Um número maior que 100
+} [medio]
+
+::Português:: Qual é o coletivo de lobos? {
+=Alcateia
+~Manada
+~Bando
+~Cardume
+} [dificil]
+
+::Português:: O que é um substantivo? {
+=Palavra que nomeia seres, objetos, lugares ou sentimentos
+~Palavra que indica ação
+~Palavra que modifica o verbo
+~Palavra que liga frases
+} [facil]
+
+::Português:: Qual a classe gramatical da palavra "rapidamente"? {
+=Advérbio
+~Adjetivo
+~Substantivo
+~Pronome
+} [medio]
+
+::Português:: Qual figura de linguagem está presente em "O tempo voa"? {
+=Metáfora
+~Hipérbole
+~Ironia
+~Metonímia
+} [dificil]
