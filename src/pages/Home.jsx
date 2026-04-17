@@ -139,7 +139,8 @@ function Home() {
             >
                 <button
                     onClick={() => navigate('/login')}
-                    className="flex items-center gap-2 text-blue-200/60 hover:text-white transition-colors bg-white/5 px-6 py-2 rounded-full hover:bg-white/10 backdrop-blur-sm border border-blue-500/30"
+                    //tornar as cores do botão para ter maior contraste com a do fundo
+                    className="flex items-center gap-2 text-blue-200/60 hover:text-white transition-colors bg-blue-950 px-6 py-2 rounded-full hover:bg-yellow-400/80 backdrop-blur-sm border border-blue-500/30"
                 >
                     <GraduationCap size={18} />
                     Sou Professor

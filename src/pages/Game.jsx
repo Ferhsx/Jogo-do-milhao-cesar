@@ -175,10 +175,10 @@ function Game() {
                     <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-400 to-yellow-600"></div>
                     <Trophy size={64} className="text-yellow-400 mx-auto mb-6 drop-shadow-lg" />
                     <h1 className="text-4xl font-black text-white mb-2">Fim de Jogo!</h1>
-                    <p className="text-purple-200 mb-8 font-medium text-lg">{feedback}</p>
+                    <p className="text-blue-200 mb-8 font-medium text-lg">{feedback}</p>
 
                     <div className="bg-white/10 p-6 rounded-2xl mb-8 backdrop-blur-sm border border-white/10">
-                        <p className="text-sm text-purple-300 uppercase tracking-wide font-bold mb-1">Pontuação Final</p>
+                        <p className="text-sm text-blue-400 uppercase tracking-wide font-bold mb-1">Pontuação Final</p>
                         <p className="text-6xl font-black text-yellow-400 drop-shadow-md">{score}</p>
                     </div>
 
@@ -198,7 +198,7 @@ function Game() {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => navigate('/')}
-                            className="w-full bg-white text-purple-900 py-4 rounded-xl font-bold hover:bg-gray-100 transition-colors shadow-lg flex items-center justify-center gap-2"
+                            className="w-full bg-white text-blue-900 py-4 rounded-xl font-bold hover:bg-gray-100 transition-colors shadow-lg flex items-center justify-center gap-2"
                         >
                             <HomeIcon size={20} /> Voltar ao Início
                         </motion.button>
