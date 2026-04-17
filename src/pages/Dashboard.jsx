@@ -16,9 +16,9 @@ function Dashboard() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen text-white bg-show-radial">
             {/* Cabeçalho */}
-            <header className="bg-gradient-to-r from-indigo-900 to-purple-900 text-white shadow-lg sticky top-0 z-50">
+            <header className="bg-[#000c24]/90 backdrop-blur-md text-white shadow-[0_4px_15px_rgba(255,215,0,0.15)] border-b-2 border-yellow-500 sticky top-0 z-50">
                 <div className="container mx-auto px-6 py-4 flex justify-between items-center">
                     <div className="flex items-center gap-2">
                         <LayoutDashboard className="text-yellow-400" />
@@ -42,20 +42,20 @@ function Dashboard() {
             <main className="container mx-auto px-4 md:px-6 py-8 space-y-8 max-w-7xl">
                 {/* Intro */}
                 <div className="mb-8">
-                    <h2 className="text-2xl font-bold text-gray-800">Visão Geral</h2>
-                    <p className="text-gray-500">Gerencie as questões e inicie novas rodadas do jogo.</p>
+                    <h2 className="text-3xl font-black text-yellow-400 drop-shadow-md">Visão Geral</h2>
+                    <p className="text-blue-200">Gerencie as questões e inicie novas rodadas do jogo.</p>
                 </div>
 
                 <div className="flex flex-col gap-8">
                     {/* Game Config (Lobby) */}
-                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <h3 className="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Controle do Jogo</h3>
+                    <div className="glass-panel p-6 md:p-8 rounded-[30px]">
+                        <h3 className="text-xl font-bold text-yellow-400 mb-4 border-b border-yellow-500/30 pb-2">Controle do Jogo</h3>
                         <GameConfig />
                     </div>
 
                     {/* Question Manager - Wide if logical, but here side by side */}
-                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <h3 className="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Banco de Questões</h3>
+                    <div className="glass-panel p-6 md:p-8 rounded-[30px]">
+                        <h3 className="text-xl font-bold text-yellow-400 mb-4 border-b border-yellow-500/30 pb-2">Banco de Questões</h3>
                         <QuestionManager />
                     </div>
                 </div>

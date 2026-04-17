@@ -158,7 +158,7 @@ function RankingModal({ roomId, onClose, playerScore, playerNickname, isProfesso
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.8, opacity: 0 }}
-                className="bg-gradient-to-b from-indigo-900 to-purple-950 rounded-3xl p-6 max-w-xl w-full shadow-2xl border border-purple-500/30 max-h-[85vh] overflow-hidden flex flex-col relative"
+                className="glass-panel border-2 border-yellow-500 rounded-3xl p-6 max-w-xl w-full shadow-[0_0_30px_rgba(255,215,0,0.2)] max-h-[85vh] overflow-hidden flex flex-col relative"
             >
                 {/* Header */}
                 <div className="text-center mb-6 relative">
@@ -177,7 +177,7 @@ function RankingModal({ roomId, onClose, playerScore, playerNickname, isProfesso
                         <>
                             <Trophy size={40} className="text-yellow-400 mx-auto mb-2 drop-shadow-lg" />
                             <h2 className="text-2xl font-black text-white px-8">Ranking da Sala</h2>
-                            <p className="text-purple-300 text-sm mt-1 mb-4">Top 10 Jogadores</p>
+                            <p className="text-yellow-400 font-bold text-sm mt-1 mb-4 uppercase tracking-widest">Top 10 Jogadores</p>
 
                             {isProfessor && (
                                 <button
@@ -192,7 +192,7 @@ function RankingModal({ roomId, onClose, playerScore, playerNickname, isProfesso
                         <>
                             <ClipboardList size={40} className="text-blue-400 mx-auto mb-2 drop-shadow-lg" />
                             <h2 className="text-2xl font-black text-white truncate px-10">Desempenho: {sessionDetails.nickname}</h2>
-                            <p className="text-purple-300 text-sm mt-1">Detalhes das respostas</p>
+                            <p className="text-yellow-400 font-bold text-sm mt-1 uppercase tracking-widest">Detalhes das respostas</p>
                         </>
                     )}
                 </div>
@@ -205,7 +205,7 @@ function RankingModal({ roomId, onClose, playerScore, playerNickname, isProfesso
                                 <div className="w-8 h-8 border-2 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
                             </div>
                         ) : ranking.length === 0 ? (
-                            <p className="text-center text-purple-300 py-8">Nenhum jogador ainda.</p>
+                            <p className="text-center text-blue-200 py-8 font-bold">Nenhum jogador ainda.</p>
                         ) : (
                             ranking.map((entry, index) => {
                                 const isCurrentPlayer = entry.nickname === playerNickname && entry.score === playerScore;
@@ -262,12 +262,12 @@ function RankingModal({ roomId, onClose, playerScore, playerNickname, isProfesso
                     <div className="flex-1 flex flex-col overflow-hidden">
                         <div className="overflow-y-auto flex-1 space-y-4 pr-1 custom-scrollbar mb-4">
                             {sessionDetails.historico.length === 0 ? (
-                                <p className="text-center text-purple-300 py-8">Nenhum dado de respostas disponível.</p>
+                                <p className="text-center text-blue-200 py-8 font-bold">Nenhum dado de respostas disponível.</p>
                             ) : (
                                 sessionDetails.historico.map((h, i) => (
                                     <div key={i} className="bg-white/5 border border-white/10 p-4 rounded-xl space-y-3">
                                         <div className="flex gap-2">
-                                            <span className="bg-purple-600/50 text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-full shrink-0 border border-purple-400/30">
+                                            <span className="bg-blue-900 border border-yellow-500 text-yellow-400 text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-full shrink-0">
                                                 {i + 1}
                                             </span>
                                             <p className="text-white text-sm font-medium leading-relaxed">{h.enunciado}</p>
@@ -288,7 +288,7 @@ function RankingModal({ roomId, onClose, playerScore, playerNickname, isProfesso
                         </div>
                         <button
                             onClick={downloadReport}
-                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-xl flex items-center justify-center gap-2 transform transition-all active:scale-95 shadow-xl shadow-blue-900/40"
+                            className="w-full bg-yellow-500 hover:bg-yellow-400 text-blue-950 font-black py-4 rounded-xl flex items-center justify-center gap-2 transform transition-all active:scale-95 shadow-[0_0_15px_rgba(255,215,0,0.3)]"
                         >
                             <Download size={20} />
                             BAIXAR RELATÓRIO (.TXT)

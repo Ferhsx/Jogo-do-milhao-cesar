@@ -166,11 +166,11 @@ function Game() {
     // ====== GAME OVER SCREEN ======
     if (isGameOver) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-fuchsia-900 flex items-center justify-center p-4">
+            <div className="min-h-screen bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-800 via-[#000c24] to-black flex items-center justify-center p-4">
                 <motion.div
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
-                    className="glass p-8 md:p-12 rounded-3xl max-w-md w-full text-center relative overflow-hidden"
+                    className="glass-panel p-8 md:p-12 rounded-[40px] max-w-md w-full text-center relative overflow-hidden"
                 >
                     <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-400 to-yellow-600"></div>
                     <Trophy size={64} className="text-yellow-400 mx-auto mb-6 drop-shadow-lg" />
@@ -221,27 +221,27 @@ function Game() {
 
     if (!question) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-fuchsia-900 flex flex-col items-center justify-center p-4">
-                <div className="w-16 h-16 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin mb-4"></div>
-                <p className="text-white font-bold text-xl animate-pulse">Carregando Jogo...</p>
+            <div className="min-h-screen bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-800 via-[#000c24] to-black flex flex-col items-center justify-center p-4">
+                <div className="w-16 h-16 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin mb-4 shadow-[0_0_15px_rgba(255,215,0,0.5)]"></div>
+                <p className="text-yellow-400 font-black text-2xl animate-pulse tracking-widest uppercase">Carregando...</p>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-fuchsia-900 p-4 font-sans flex flex-col">
-
-            {/* Header */}
-            <header className="flex justify-between items-center glass p-4 rounded-2xl mb-6 shadow-lg z-10 mx-auto w-full max-w-5xl">
-                <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-yellow-400 to-orange-500 flex items-center justify-center font-bold text-white shadow-lg">
-                        {nickname ? nickname.charAt(0).toUpperCase() : 'J'}
+        <div className="min-h-screen text-white font-['Outfit'] overflow-x-hidden relative flex flex-col bg-show-radial">
+            {/* Header / Top Bar */}
+            <div className="max-w-5xl mx-auto pt-6 px-4 w-full">
+                <div className="glass-panel py-3 px-6 rounded-full flex justify-between items-center border-b-4 border-yellow-500 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-yellow-400 to-orange-500 flex items-center justify-center font-bold text-white shadow-lg">
+                            {nickname ? nickname.charAt(0).toUpperCase() : 'J'}
+                        </div>
+                        <div className="flex flex-col">
+                            <span className="text-xs font-bold text-blue-300 uppercase tracking-widest">Jogador</span>
+                            <span className="text-sm md:text-md font-bold text-white leading-tight">{nickname || 'Visitante'}</span>
+                        </div>
                     </div>
-                    <div className="flex flex-col">
-                        <span className="text-xs font-bold text-purple-300 uppercase tracking-widest">Jogador</span>
-                        <span className="text-sm md:text-md font-bold text-white leading-tight">{nickname || 'Visitante'}</span>
-                    </div>
-                </div>
 
                 {/* Timer no Header */}
                 {tempoBase > 0 && (
@@ -255,7 +255,8 @@ function Game() {
                     <span className="text-xs font-bold text-purple-300 uppercase tracking-widest">Placar</span>
                     <span className="text-2xl font-black text-yellow-400 drop-shadow-sm leading-none">{score}</span>
                 </div>
-            </header>
+            </div>
+        </div>
 
             {/* Timer Bar */}
             {tempoBase > 0 && (
@@ -283,11 +284,11 @@ function Game() {
                         className="w-full"
                     >
                         {/* Card da Questão */}
-                        <div className="glass p-6 md:p-10 rounded-3xl shadow-2xl relative overflow-hidden mb-6 border-t border-white/20">
+                        <div className="glass-question p-8 md:p-12 mb-8 mx-auto w-full md:w-[90%] text-center">
                             {/* Timer Flutuante (Relógio) */}
                             {tempoBase > 0 && !feedback && (
-                                <div className="absolute top-6 right-6 md:top-10 md:right-10 flex flex-col items-center">
-                                    <div className={`relative flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full border-4 ${timeLeft <= 5 ? 'border-red-500 animate-pulse' : 'border-white/20'} bg-black/20 backdrop-blur-md transition-colors duration-300`}>
+                                <div className="absolute top-4 right-4 md:top-8 md:right-8 flex flex-col items-center">
+                                    <div className={`relative flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full border-4 ${timeLeft <= 5 ? 'border-red-500 animate-pulse bg-red-900/50' : 'border-yellow-500 bg-blue-900/80'} backdrop-blur-md transition-colors duration-300 shadow-[0_0_15px_rgba(255,215,0,0.5)]`}>
                                         <Clock size={timeLeft <= 5 ? 24 : 32} className={`${timeLeft <= 5 ? 'text-red-400' : 'text-white/60'} absolute transition-all`} />
                                         <svg className="w-full h-full -rotate-90">
                                             <circle
@@ -313,18 +314,18 @@ function Game() {
                             )}
 
                             {/* Tags */}
-                            <div className="flex gap-2 mb-6">
-                                <span className="bg-purple-600/50 text-purple-100 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide border border-purple-500/30">
+                            <div className="flex justify-center gap-2 mb-6">
+                                <span className="bg-blue-800 text-yellow-300 text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wide border border-yellow-500/50">
                                     {question.tema}
                                 </span>
                                 {!esconderNivel && (
-                                    <span className="bg-blue-600/50 text-blue-100 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide border border-blue-500/30">
+                                    <span className="bg-blue-800 text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wide border border-blue-500">
                                         Nível {level} • {question.dificuldade}
                                     </span>
                                 )}
                             </div>
 
-                            <h2 className="text-2xl md:text-4xl font-black text-white mb-4 leading-tight drop-shadow-md pr-20 md:pr-32">
+                            <h2 className="text-2xl md:text-4xl font-black text-white mb-2 leading-tight drop-shadow-lg px-4 md:px-16">
                                 {question.enunciado}
                             </h2>
                         </div>
@@ -350,17 +351,31 @@ function Game() {
                         </AnimatePresence>
 
                         {/* Alternativas */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="flex flex-col gap-4 max-w-4xl mx-auto w-full">
                             {question.alternativas.map((alt, idx) => {
                                 const isEliminated = helpResult?.type === 'eliminar' && helpResult.remove.includes(alt);
                                 const isSelected = selectedAnswer === alt;
 
-                                let buttonClass = "glass border-transparent hover:bg-white/10 hover:border-purple-400/50 text-white";
+                                let buttonClass = "glass-answer hover:bg-blue-800 hover:border-yellow-400 text-white";
+                                let letterClass = "bg-blue-900 text-yellow-400 border-2 border-yellow-500";
+                                
                                 if (isSelected) {
-                                    if (feedbackType === 'success') buttonClass = "bg-gradient-to-r from-green-500 to-emerald-600 border-green-400 text-white shadow-[0_0_20px_rgba(16,185,129,0.5)] scale-[1.02]";
-                                    else if (feedbackType === 'error') buttonClass = "bg-gradient-to-r from-red-500 to-rose-600 border-red-400 text-white shadow-[0_0_20px_rgba(239,68,68,0.5)] scale-[1.02]";
-                                    else if (feedbackType === 'warning') buttonClass = "bg-yellow-500/50 border-yellow-400 text-white";
-                                    else buttonClass = "bg-purple-500 border-purple-400 text-white";
+                                    if (feedbackType === 'success') {
+                                        buttonClass = "bg-green-600 border-green-400 text-white shadow-[0_0_20px_rgba(16,185,129,0.8)] scale-[1.02] rounded-full";
+                                        letterClass = "bg-green-700 text-white border-white";
+                                    }
+                                    else if (feedbackType === 'error') {
+                                        buttonClass = "bg-red-600 border-red-400 text-white shadow-[0_0_20px_rgba(239,68,68,0.8)] scale-[1.02] rounded-full";
+                                        letterClass = "bg-red-700 text-white border-white";
+                                    }
+                                    else if (feedbackType === 'warning') {
+                                        buttonClass = "bg-yellow-500 border-yellow-300 text-blue-900 shadow-[0_0_20px_rgba(255,215,0,0.8)] rounded-full";
+                                        letterClass = "bg-yellow-600 text-white border-white";
+                                    }
+                                    else {
+                                        buttonClass = "bg-orange-500 border-orange-300 text-white rounded-full";
+                                        letterClass = "bg-orange-600 text-white border-white";
+                                    }
                                 }
 
                                 if (isEliminated) {
@@ -379,17 +394,16 @@ function Game() {
                                         onClick={() => handleAnswer(alt)}
                                         disabled={!!feedback || !!selectedAnswer}
                                         className={`
-                                            p-6 rounded-2xl text-left border-2 transition-all duration-200 relative group
+                                            px-6 py-4 rounded-full text-left transition-all duration-200 relative group w-full
                                             ${buttonClass}
-                                            ${feedback ? 'cursor-default opacity-80' : 'cursor-pointer'}
-                                            ${!isSelected && !feedback ? 'hover:bg-white/20' : ''}
+                                            ${feedback ? 'cursor-default opacity-90' : 'cursor-pointer'}
                                         `}
                                     >
                                         <div className="flex items-center">
-                                            <span className={`w-10 h-10 flex items-center justify-center rounded-xl font-black text-lg mr-4 transition-colors ${isSelected ? 'bg-white/20 text-white' : 'bg-white/10 text-yellow-400 group-hover:bg-white/20'}`}>
+                                            <span className={`w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-full font-black text-xl mr-4 transition-colors ${letterClass}`}>
                                                 {String.fromCharCode(65 + idx)}
                                             </span>
-                                            <span className="text-lg md:text-xl font-medium leading-snug">{alt}</span>
+                                            <span className="text-lg md:text-xl font-bold leading-snug">{alt}</span>
                                         </div>
                                     </motion.button>
                                 );
@@ -400,28 +414,28 @@ function Game() {
             </div>
 
             {/* Bottom Bar: Help Actions */}
-            <div className="fixed bottom-0 left-0 w-full glass border-t border-white/10 p-2 z-20">
-                <div className="max-w-5xl mx-auto flex justify-around md:justify-center md:gap-8">
+            <div className="fixed bottom-0 left-0 w-full glass-panel border-t-0 p-2 z-20 rounded-t-[30px]">
+                <div className="max-w-5xl mx-auto flex justify-around md:justify-center md:gap-12">
                     <HelpButton
-                        icon={<Scissors size={20} />}
-                        label="Eliminar"
+                        icon={<Scissors size={24} />}
+                        label="Cartas"
                         onClick={() => handleHelp('eliminar')}
                         disabled={helpResult?.type === 'eliminar' || !!feedback || loading}
-                        color="text-purple-400"
+                        color="text-yellow-400"
                     />
                     <HelpButton
-                        icon={<Users size={20} />}
-                        label="Plateia"
+                        icon={<Users size={24} />}
+                        label="Convidados"
                         onClick={() => handleHelp('plateia')}
                         disabled={!!feedback || loading}
-                        color="text-blue-400"
+                        color="text-yellow-400"
                     />
                     <HelpButton
-                        icon={<MessageCircle size={20} />}
-                        label="IA Chat"
+                        icon={<MessageCircle size={24} />}
+                        label="Universitário (IA)"
                         onClick={() => handleHelp('chat')}
                         disabled={!!feedback || loading}
-                        color="text-green-400"
+                        color="text-yellow-400"
                     />
                 </div>
             </div>
@@ -459,17 +473,17 @@ function HelpButton({ icon, label, onClick, disabled, color }) {
             onClick={onClick}
             disabled={disabled}
             className={`
-                flex flex-col items-center gap-1 p-2 rounded-xl transition-all min-w-[70px]
+                flex flex-col items-center gap-1 p-2 rounded-xl transition-all min-w-[80px] group
                 ${disabled
                     ? 'opacity-40 cursor-not-allowed grayscale'
-                    : 'hover:bg-white/10 active:scale-95 cursor-pointer'
+                    : 'cursor-pointer hover:scale-105'
                 }
             `}
         >
-            <div className={`p-2 rounded-2xl bg-black/20 shadow-inner ${disabled ? 'text-gray-500' : color}`}>
+            <div className={`p-4 rounded-full border-2 border-yellow-500 bg-blue-900 shadow-[0_0_10px_rgba(255,215,0,0.3)] group-hover:bg-blue-800 transition-colors ${disabled ? 'text-gray-500 border-gray-500' : color}`}>
                 {icon}
             </div>
-            <span className="text-[10px] font-bold text-gray-300 uppercase tracking-wider">{label}</span>
+            <span className="text-[11px] font-black text-yellow-400 uppercase tracking-widest mt-1 drop-shadow-md">{label}</span>
         </button>
     )
 }

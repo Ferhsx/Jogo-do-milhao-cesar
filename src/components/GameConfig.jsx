@@ -101,9 +101,9 @@ function GameConfig() {
         <div className="space-y-6">
             {createdPin ? (
                 <div className="flex flex-col items-center justify-center py-8 animate-scale-in">
-                    <div className="bg-purple-600 text-white p-8 md:p-12 text-center rounded-2xl shadow-xl max-w-lg w-full">
-                        <h3 className="text-xl md:text-2xl font-bold mb-2 opacity-90">Sala Pronta!</h3>
-                        <p className="text-purple-200 mb-6 text-sm">Compartilhe o código abaixo com seus alunos</p>
+                    <div className="bg-blue-900/50 border-2 border-yellow-500 shadow-[0_0_20px_rgba(255,215,0,0.3)] text-white p-8 md:p-12 text-center rounded-3xl max-w-lg w-full">
+                        <h3 className="text-xl md:text-2xl font-bold mb-2 text-yellow-400">Sala Pronta!</h3>
+                        <p className="text-blue-200 mb-6 text-sm font-bold">Compartilhe o código abaixo com seus alunos</p>
                         <div
                             className="relative inline-block group cursor-pointer"
                             onClick={() => {
@@ -114,10 +114,10 @@ function GameConfig() {
                                 }
                             }}
                         >
-                            <div className="bg-white/10 text-6xl font-black tracking-[0.2em] px-8 py-4 rounded-xl border-2 border-white/20 shadow-inner backdrop-blur-sm group-hover:bg-white/20 transition-colors">
+                            <div className="bg-[#000c24]/80 text-yellow-400 text-6xl font-black tracking-[0.2em] px-8 py-4 rounded-xl border-2 border-yellow-500/50 shadow-inner backdrop-blur-sm group-hover:bg-black/80 transition-colors">
                                 {createdPin}
                             </div>
-                            <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-purple-300 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-yellow-200 opacity-0 group-hover:opacity-100 transition-opacity">
                                 Clique para copiar
                             </div>
                         </div>
@@ -153,70 +153,70 @@ function GameConfig() {
                 <>
                     <div className="space-y-6">
                         {/* Seleção de Temas */}
-                        <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
-                            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-2">
+                        <div className="bg-[#000c24]/50 p-4 rounded-xl border border-blue-500/30">
+                            <h3 className="text-sm font-bold text-yellow-400 uppercase tracking-widest mb-3 flex items-center gap-2">
                                 <Hash size={14} /> Temas Ativos
                             </h3>
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                                 {availableThemes.map(theme => (
-                                    <label key={theme} className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg cursor-pointer hover:border-purple-300 transition-all shadow-sm">
+                                    <label key={theme} className="flex items-center gap-3 p-3 bg-blue-900/40 border border-blue-500/50 rounded-lg cursor-pointer hover:border-yellow-400 transition-all shadow-sm">
                                         <div className="relative flex items-center">
                                             <input
                                                 type="checkbox"
                                                 checked={config.temas_ativos.includes(theme)}
                                                 onChange={() => handleThemeChange(theme)}
-                                                className="peer h-5 w-5 cursor-pointer appearance-none rounded border border-gray-300 shadow-sm transition-all checked:border-purple-500 checked:bg-purple-500 hover:border-purple-400"
+                                                className="peer h-5 w-5 cursor-pointer appearance-none rounded border border-blue-400 shadow-sm transition-all checked:border-yellow-400 checked:bg-yellow-500 hover:border-yellow-300"
                                             />
-                                            <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100">
+                                            <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-blue-900 opacity-0 peer-checked:opacity-100">
                                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" strokeWidth="1"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path></svg>
                                             </div>
                                         </div>
-                                        <span className="text-sm font-medium text-gray-700 capitalize">{theme}</span>
+                                        <span className="text-sm font-bold text-blue-100 capitalize">{theme}</span>
                                     </label>
                                 ))}
-                                {availableThemes.length === 0 && <p className="text-gray-400 text-sm">Nenhum tema encontrado.</p>}
+                                {availableThemes.length === 0 && <p className="text-blue-300 text-sm">Nenhum tema encontrado.</p>}
                             </div>
                         </div>
 
                         {/* Configurações Gerais */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {/* Modo de Jogo */}
-                            <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
-                                <h3 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-2">
+                            <div className="bg-[#000c24]/50 p-4 rounded-xl border border-blue-500/30">
+                                <h3 className="text-sm font-bold text-yellow-400 uppercase tracking-widest mb-3 flex items-center gap-2">
                                     <Settings size={14} /> Modo de Jogo
                                 </h3>
-                                <div className="space-y-2">
-                                    <label className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 cursor-pointer hover:border-purple-300 transition-colors">
-                                        <input type="radio" name="modo_de_jogo" value="classico" checked={config.modo_de_jogo === 'classico'} onChange={handleChange} className="text-purple-600 focus:ring-purple-500 h-4 w-4" />
-                                        <span className="text-sm font-medium">Clássico</span>
+                                <div className="space-y-2 text-white">
+                                    <label className="flex items-center gap-3 p-3 bg-blue-900/40 rounded-lg border border-blue-500/50 cursor-pointer hover:border-yellow-400 transition-colors">
+                                        <input type="radio" name="modo_de_jogo" value="classico" checked={config.modo_de_jogo === 'classico'} onChange={handleChange} className="text-yellow-500 focus:ring-yellow-500 h-4 w-4" />
+                                        <span className="text-sm font-bold">Clássico</span>
                                     </label>
-                                    <label className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 cursor-pointer hover:border-purple-300 transition-colors">
-                                        <input type="radio" name="modo_de_jogo" value="alternativo" checked={config.modo_de_jogo === 'alternativo'} onChange={handleChange} className="text-purple-600 focus:ring-purple-500 h-4 w-4" />
-                                        <span className="text-sm font-medium">Alternativo</span>
+                                    <label className="flex items-center gap-3 p-3 bg-blue-900/40 rounded-lg border border-blue-500/50 cursor-pointer hover:border-yellow-400 transition-colors">
+                                        <input type="radio" name="modo_de_jogo" value="alternativo" checked={config.modo_de_jogo === 'alternativo'} onChange={handleChange} className="text-yellow-500 focus:ring-yellow-500 h-4 w-4" />
+                                        <span className="text-sm font-bold">Alternativo</span>
                                     </label>
                                     <label className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${config.modo_de_jogo === 'personalizado'
-                                        ? 'bg-purple-50 border-purple-400 ring-2 ring-purple-200'
-                                        : 'bg-white border-gray-200 hover:border-purple-300'
+                                        ? 'bg-blue-800 border-yellow-400 ring-2 ring-yellow-500/50'
+                                        : 'bg-blue-900/40 border-blue-500/50 hover:border-yellow-400'
                                         }`}>
-                                        <input type="radio" name="modo_de_jogo" value="personalizado" checked={config.modo_de_jogo === 'personalizado'} onChange={handleChange} className="text-purple-600 focus:ring-purple-500 h-4 w-4" />
+                                        <input type="radio" name="modo_de_jogo" value="personalizado" checked={config.modo_de_jogo === 'personalizado'} onChange={handleChange} className="text-yellow-500 focus:ring-yellow-500 h-4 w-4" />
                                         <div className="flex items-center gap-2">
-                                            <Zap size={14} className="text-purple-500" />
-                                            <span className="text-sm font-medium">Personalizado</span>
+                                            <Zap size={14} className="text-yellow-400" />
+                                            <span className="text-sm font-bold">Personalizado</span>
                                         </div>
                                     </label>
                                 </div>
                             </div>
 
                             {/* Outras Opções */}
-                            <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 flex flex-col">
-                                <h3 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-2">
+                            <div className="bg-[#000c24]/50 p-4 rounded-xl border border-blue-500/30 flex flex-col text-white">
+                                <h3 className="text-sm font-bold text-yellow-400 uppercase tracking-widest mb-3 flex items-center gap-2">
                                     Outras Opções
                                 </h3>
-                                <label className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 cursor-pointer hover:border-purple-300 transition-colors mb-auto">
-                                    <input type="checkbox" name="permitir_repeticao" checked={config.permitir_repeticao} onChange={handleChange} className="h-5 w-5 rounded border-gray-300 text-purple-600 focus:ring-purple-500" />
-                                    <span className="text-sm font-medium">Repetir perguntas já usadas</span>
+                                <label className="flex items-center gap-3 p-3 bg-blue-900/40 rounded-lg border border-blue-500/50 cursor-pointer hover:border-yellow-400 transition-colors mb-auto">
+                                    <input type="checkbox" name="permitir_repeticao" checked={config.permitir_repeticao} onChange={handleChange} className="h-5 w-5 rounded border-gray-300 text-yellow-500 focus:ring-yellow-500" />
+                                    <span className="text-sm font-bold">Repetir perguntas já usadas</span>
                                 </label>
-                                <button onClick={handleResetHistory} className="mt-4 flex items-center justify-center gap-2 text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition-colors border border-dashed border-red-200 hover:border-red-300 text-sm">
+                                <button onClick={handleResetHistory} className="mt-4 flex items-center justify-center gap-2 text-red-400 hover:text-white hover:bg-red-900/50 p-2 rounded-lg transition-colors border border-dashed border-red-500/30 text-sm font-bold">
                                     <RefreshCw size={14} />
                                     Resetar Histórico
                                 </button>
@@ -225,15 +225,15 @@ function GameConfig() {
 
                         {/* Seção Personalizado — só aparece quando o modo "personalizado" está selecionado */}
                         {config.modo_de_jogo === 'personalizado' && (
-                            <div className="bg-gradient-to-r from-purple-50 to-indigo-50 p-5 rounded-xl border border-purple-200">
-                                <h3 className="text-sm font-bold text-purple-700 uppercase tracking-widest mb-4 flex items-center gap-2">
+                            <div className="bg-blue-900/30 p-5 rounded-xl border border-yellow-500/50">
+                                <h3 className="text-sm font-bold text-yellow-400 uppercase tracking-widest mb-4 flex items-center gap-2">
                                     <Zap size={14} /> Configurações do Modo Personalizado
                                 </h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-white">
                                     {/* Timer */}
-                                    <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
-                                        <label className="flex items-center gap-2 text-sm font-bold text-gray-600 mb-2">
-                                            <Clock size={14} className="text-purple-500" /> Tempo por Pergunta
+                                    <div className="bg-[#000c24]/60 p-4 rounded-xl border border-blue-500/30 shadow-sm">
+                                        <label className="flex items-center gap-2 text-sm font-bold text-blue-100 mb-2">
+                                            <Clock size={14} className="text-yellow-400" /> Tempo por Pergunta
                                         </label>
                                         <div className="flex items-center gap-3">
                                             <input
@@ -244,18 +244,18 @@ function GameConfig() {
                                                 min={0}
                                                 max={300}
                                                 placeholder="0"
-                                                className="w-24 px-3 py-2 border border-gray-300 rounded-lg text-center font-bold text-lg focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none"
+                                                className="w-24 px-3 py-2 border border-blue-500/50 bg-blue-900/50 text-white rounded-lg text-center font-bold text-lg focus:border-yellow-400 outline-none"
                                             />
-                                            <span className="text-sm text-gray-500">segundos <span className="text-xs text-gray-400">(0 = sem tempo)</span></span>
+                                            <span className="text-sm text-blue-200">segundos <span className="text-xs opacity-70">(0 = sem tempo)</span></span>
                                         </div>
                                         {config.tempo_base > 0 && (
                                             <div className="mt-3">
-                                                <label className="text-xs font-bold text-gray-500 uppercase mb-1 block">Modo do Tempo</label>
+                                                <label className="text-xs font-bold text-blue-300 uppercase mb-1 block">Modo do Tempo</label>
                                                 <select
                                                     name="modo_tempo"
                                                     value={config.modo_tempo}
                                                     onChange={handleChange}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none bg-white"
+                                                    className="w-full px-3 py-2 border border-blue-500/50 bg-blue-900/50 rounded-lg text-sm focus:border-yellow-400 text-white outline-none"
                                                 >
                                                     <option value="fixo">⏱️ Fixo (mesmo tempo sempre)</option>
                                                     <option value="regressivo">🔥 Regressivo (menos tempo em níveis altos)</option>
@@ -266,19 +266,19 @@ function GameConfig() {
                                     </div>
 
                                     {/* Visual / Ranking */}
-                                    <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm space-y-3">
-                                        <label className="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
-                                            <input type="checkbox" name="esconder_nivel_visual" checked={config.esconder_nivel_visual} onChange={handleChange} className="h-5 w-5 rounded border-gray-300 text-purple-600 focus:ring-purple-500" />
+                                    <div className="bg-[#000c24]/60 p-4 rounded-xl border border-blue-500/30 shadow-sm space-y-3">
+                                        <label className="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-blue-800 transition-colors">
+                                            <input type="checkbox" name="esconder_nivel_visual" checked={config.esconder_nivel_visual} onChange={handleChange} className="h-5 w-5 rounded border-blue-500 text-yellow-500 focus:ring-yellow-500" />
                                             <div className="flex items-center gap-2">
-                                                {config.esconder_nivel_visual ? <EyeOff size={14} className="text-gray-400" /> : <Eye size={14} className="text-purple-500" />}
-                                                <span className="text-sm font-medium">Esconder nível da pergunta</span>
+                                                {config.esconder_nivel_visual ? <EyeOff size={14} className="text-gray-400" /> : <Eye size={14} className="text-yellow-400" />}
+                                                <span className="text-sm font-bold">Esconder nível da pergunta</span>
                                             </div>
                                         </label>
-                                        <label className="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
-                                            <input type="checkbox" name="exibir_ranking" checked={config.exibir_ranking} onChange={handleChange} className="h-5 w-5 rounded border-gray-300 text-purple-600 focus:ring-purple-500" />
+                                        <label className="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-blue-800 transition-colors">
+                                            <input type="checkbox" name="exibir_ranking" checked={config.exibir_ranking} onChange={handleChange} className="h-5 w-5 rounded border-blue-500 text-yellow-500 focus:ring-yellow-500" />
                                             <div className="flex items-center gap-2">
-                                                <Trophy size={14} className={config.exibir_ranking ? "text-yellow-500" : "text-gray-400"} />
-                                                <span className="text-sm font-medium">Ativar Ranking (Leaderboard)</span>
+                                                <Trophy size={14} className={config.exibir_ranking ? "text-yellow-400" : "text-gray-500"} />
+                                                <span className="text-sm font-bold">Ativar Ranking (Leaderboard)</span>
                                             </div>
                                         </label>
                                     </div>
@@ -292,13 +292,13 @@ function GameConfig() {
                         <button
                             onClick={handleSave}
                             disabled={!!message}
-                            className="px-6 py-3 bg-gray-900 text-white rounded-xl font-bold hover:bg-gray-800 transition-colors shadow-lg active:scale-95 disabled:opacity-50 text-sm"
+                            className="px-6 py-3 bg-blue-900 border border-blue-500 text-yellow-400 rounded-xl font-bold hover:bg-blue-800 transition-colors shadow-lg active:scale-95 disabled:opacity-50 text-sm"
                         >
                             {message || 'Salvar Alterações'}
                         </button>
                         <button
                             onClick={handleCreateRoom}
-                            className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-lg font-bold py-3 rounded-xl shadow-lg hover:shadow-indigo-500/30 transition-all hover:scale-[1.02] active:scale-98 flex items-center justify-center gap-2"
+                            className="flex-1 bg-gradient-to-r from-yellow-400 to-yellow-600 text-blue-950 text-lg font-black py-3 rounded-xl shadow-[0_0_15px_rgba(255,215,0,0.4)] hover:shadow-[0_0_20px_rgba(255,215,0,0.6)] transition-all hover:scale-[1.02] active:scale-98 flex items-center justify-center gap-2 uppercase tracking-wider"
                         >
                             <PlayCircle size={24} />
                             CRIAR SALA
