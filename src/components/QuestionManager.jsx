@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../service/api';
 import Modal from './Modal';
 import QuestionForm from './QuestionForm';
-import { Plus, Upload, Trash2, Edit2, HelpCircle, FileText, Search } from 'lucide-react';
+import { Plus, Upload, Trash2, Edit2, HelpCircle, FileText, Search, Database } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 function QuestionManager() {
@@ -169,18 +169,18 @@ function QuestionManager() {
 
                     {!loading && !error && (
                         <div className="overflow-x-auto">
-                            <table className="min-w-full text-left text-sm md:text-base">
-                                <thead className="bg-blue-950/80 border-b border-blue-500/30 text-yellow-400 uppercase tracking-wider text-xs font-bold">
-                                    <tr>
-                                        <th className="py-4 px-6 md:w-1/2">Enunciado</th>
-                                        <th className="py-4 px-6">Tema</th>
-                                        <th className="py-4 px-6">Dificuldade</th>
-                                        <th className="py-4 px-6 text-right">Ações</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-blue-500/20 text-white">
-                                    {questions.length > 0 ? (
-                                        questions.map((question) => (
+                            {questions.length > 0 ? (
+                                <table className="min-w-full text-left text-sm md:text-base">
+                                    <thead className="bg-blue-950/80 border-b border-blue-500/30 text-yellow-400 uppercase tracking-wider text-xs font-bold">
+                                        <tr>
+                                            <th className="py-4 px-6 md:w-1/2">Enunciado</th>
+                                            <th className="py-4 px-6">Tema</th>
+                                            <th className="py-4 px-6">Dificuldade</th>
+                                            <th className="py-4 px-6 text-right">Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-blue-500/20 text-white">
+                                        {questions.map((question) => (
                                             <tr key={question._id} className="hover:bg-blue-900/40 transition-colors group">
                                                 <td className="py-4 px-6 font-medium line-clamp-2">
                                                     <div className="flex items-start gap-3">
@@ -218,24 +218,31 @@ function QuestionManager() {
                                                     </div>
                                                 </td>
                                             </tr>
-                                        ))
-                                    ) : (
-                                        <tr>
-                                            <td colSpan="4" className="py-12 text-center text-blue-300">
-                                                <div className="flex flex-col items-center">
-                                                    <div className="bg-blue-900/50 border border-blue-500/50 p-4 rounded-full mb-3">
-                                                        <HelpCircle size={32} className="text-blue-400" />
-                                                    </div>
-                                                    <p className="text-white font-medium">Nenhuma questão encontrada.</p>
-                                                    <button onClick={handleOpenModalForCreate} className="text-yellow-400 font-bold mt-2 hover:underline">
-                                                        Criar a primeira questão
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            ) : (
+                                <motion.div 
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="flex flex-col items-center justify-center py-16 px-4 text-center min-h-[500px]"
+                                >
+                                    <div className="bg-blue-900/30 border border-blue-500/30 p-6 rounded-full mb-6 shadow-[0_0_30px_rgba(59,130,246,0.2)]">
+                                        <Database size={48} className="text-blue-400/80" />
+                                    </div>
+                                    <h3 className="text-2xl font-bold text-white mb-2">Nenhuma questão encontrada</h3>
+                                    <p className="text-blue-300 max-w-md mb-8">
+                                        Seu banco de dados está vazio. Adicione sua primeira questão para começar a montar o quiz!
+                                    </p>
+                                    <button 
+                                        onClick={handleOpenModalForCreate} 
+                                        className="bg-yellow-500 text-blue-950 px-6 py-3 rounded-lg hover:bg-yellow-400 shadow-[0_0_15px_rgba(255,215,0,0.3)] font-bold transition-transform active:scale-95 flex items-center gap-2 mx-auto"
+                                    >
+                                        <Plus size={20} />
+                                        Criar Primeira Questão
+                                    </button>
+                                </motion.div>
+                            )}
                         </div>
                     )}
                 </div>
