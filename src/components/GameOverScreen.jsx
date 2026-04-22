@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Trophy, HomeIcon } from 'lucide-react';
 import RankingModal from './RankingModal';
+import { useGame } from '../context/GameContext';
 
-function GameOverScreen({ score, feedback, exibirRanking, roomId, nickname }) {
+function GameOverScreen() {
     const navigate = useNavigate();
     const [showRanking, setShowRanking] = useState(false);
+    const { score, feedback, exibirRanking, roomId, nickname } = useGame();
 
     return (
         <div className="min-h-screen bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-800 via-[#000c24] to-black flex items-center justify-center p-4">

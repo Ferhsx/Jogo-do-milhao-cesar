@@ -1,18 +1,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Clock } from 'lucide-react';
+import { useGame } from '../context/GameContext';
 
-function GameHeader({
-    nickname,
-    score,
-    tempoBase,
-    timeLeft,
-    timerColor,
-    timerPercentage,
-    timerBarColor
-}) {
+function GameHeader() {
+    const { 
+        nickname, score, tempoBase, timeLeft, 
+        timerColor, timerPercentage, timerBarColor, feedback 
+    } = useGame();
+
     return (
-        <div className="w-full">
+        <div className="w-full relative">
             {/* Header / Top Bar */}
             <div className="max-w-5xl mx-auto pt-6 px-4 w-full">
                 <div className="glass-panel py-3 px-6 rounded-full flex justify-between items-center border-b-4 border-yellow-500 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
@@ -52,6 +50,34 @@ function GameHeader({
                             transition={{ duration: 0.5, ease: 'linear' }}
                         />
                     </div>
+                </div>
+            )}
+
+            {/* Relógio Flutuante (Migrado de Game.jsx para o Header para melhor organização) */}
+            {tempoBase > 0 && !feedback && (
+                <div className="hidden md:flex absolute top-32 right-8 flex-col items-center z-10">
+                    <div className={`relative flex items-center justify-center w-20 h-20 rounded-full border-4 ${timeLeft <= 5 ? 'border-red-500 animate-pulse bg-red-900/50' : 'border-yellow-500 bg-blue-900/80'} backdrop-blur-md transition-colors duration-300 shadow-[0_0_15px_rgba(255,215,0,0.5)]`}>
+                        <Clock size={32} className={`${timeLeft <= 5 ? 'text-red-400' : 'text-white/60'} absolute transition-all`} />
+                        <svg className="w-full h-full -rotate-90">
+                            <circle
+                                cx="50%"
+                                cy="50%"
+                                r="40%"
+                                stroke="currentColor"
+                                strokeWidth="4"
+                                fill="transparent"
+                                className={`${timeLeft <= 5 ? 'text-red-500' : 'text-blue-500'} transition-all duration-1000 ease-linear`}
+                                strokeDasharray="100"
+                                strokeDashoffset={100 - timerPercentage}
+                            />
+                        </svg>
+                        <span className={`absolute text-2xl font-black ${timeLeft <= 5 ? 'text-red-400' : 'text-white'} drop-shadow-md`}>
+                            {timeLeft}
+                        </span>
+                    </div>
+                    <span className={`text-[10px] font-extrabold uppercase tracking-widest mt-2 ${timeLeft <= 5 ? 'text-red-400' : 'text-white/40'}`}>
+                        Segundos
+                    </span>
                 </div>
             )}
         </div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { api } from '../service/api';
+import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
 import { Lock, Mail, User, ArrowRight, LayoutDashboard } from 'lucide-react';
 
@@ -13,6 +13,7 @@ function Login() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const { login, register } = useAuth();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -33,10 +34,8 @@ function Login() {
             return;
         }
 
-        const response = await api.login(formData.email, formData.password);
+        const response = await login(formData.email, formData.password);
         if (response.success) {
-            localStorage.setItem('token', response.token);
-            localStorage.setItem('user', JSON.stringify(response.user));
             navigate('/dashboard');
         } else {
             setError(response.message);
@@ -54,7 +53,7 @@ function Login() {
             return;
         }
 
-        const response = await api.register(formData.name, formData.email, formData.password);
+        const response = await register(formData.name, formData.email, formData.password);
         if (response.success) {
             alert("Cadastro realizado! Faça login.");
         } else {

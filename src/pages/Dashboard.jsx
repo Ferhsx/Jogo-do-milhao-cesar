@@ -1,17 +1,17 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import QuestionManager from '../components/QuestionManager';
 import GameConfig from '../components/GameConfig';
 import { LogOut, LayoutDashboard, User } from 'lucide-react';
 
 function Dashboard() {
     const navigate = useNavigate();
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    const userName = user.name || 'Professor';
+    const { user, logout } = useAuth();
+    const userName = user?.name || 'Professor';
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
+        logout();
         navigate('/login');
     };
 

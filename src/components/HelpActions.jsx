@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Scissors, Users, MessageCircle, CheckCircle, XCircle } from 'lucide-react';
+import { useGame } from '../context/GameContext';
 
 function HelpButton({ icon, label, onClick, disabled, color }) {
     return (
@@ -23,7 +24,9 @@ function HelpButton({ icon, label, onClick, disabled, color }) {
     );
 }
 
-function HelpActions({ handleHelp, helpResult, setHelpResult, feedback, loading }) {
+function HelpActions() {
+    const { useHelp, helpResult, setHelpResult, feedback, loading } = useGame();
+
     return (
         <>
             {/* Bottom Bar: Help Actions */}
@@ -32,21 +35,21 @@ function HelpActions({ handleHelp, helpResult, setHelpResult, feedback, loading 
                     <HelpButton
                         icon={<Scissors size={24} />}
                         label="Cartas"
-                        onClick={() => handleHelp('eliminar')}
+                        onClick={() => useHelp('eliminar')}
                         disabled={helpResult?.type === 'eliminar' || !!feedback || loading}
                         color="text-yellow-400"
                     />
                     <HelpButton
                         icon={<Users size={24} />}
                         label="Convidados"
-                        onClick={() => handleHelp('plateia')}
+                        onClick={() => useHelp('plateia')}
                         disabled={!!feedback || loading}
                         color="text-yellow-400"
                     />
                     <HelpButton
                         icon={<MessageCircle size={24} />}
                         label="Universitário (IA)"
-                        onClick={() => handleHelp('chat')}
+                        onClick={() => useHelp('chat')}
                         disabled={!!feedback || loading}
                         color="text-yellow-400"
                     />
